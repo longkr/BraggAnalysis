@@ -67,7 +67,7 @@ class MCS(object):
                 print(" MCS: file ", _filename, " does not exist.", \
                       " Raising exception")
                 raise NonExistantFile('CSV file' + \
-                                      _filename + \
+                                      _Filename + \
                                       ' does not exist; execution termimated.')
 
             #.. Set defaults:

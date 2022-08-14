@@ -84,6 +84,7 @@ class dEdx(object):
                 cls._K, cls._KUnit, cls._Z, cls._A, cls._z, \
                     cls._Eta1, cls._Eta1Unit, \
                     cls._Mp, cls._MpUnit, \
+                    cls._rho, cls._rhoUnit, \
                     = cls.parsedEdx()
         
         return cls.__instance
@@ -102,6 +103,8 @@ class dEdx(object):
               " ", self.getEta1Unit())
         print("          Projectile mass:", self.getProjectileMass(), \
               " ", self.getProjectileMassUnit())
+        print("                  Density:", self.getrho(), \
+              " ", self.getrhoUnit())
         return "     <---- Done."
 
     
@@ -132,6 +135,9 @@ class dEdx(object):
             elif cls._cntrlParams.iat[i,0].find("Projectile mass") >= 0:
                 Mp     = cls._cntrlParams.iat[i,1]
                 MpUnit = cls._cntrlParams.iat[i,2]
+            elif cls._cntrlParams.iat[i,0].find("Density") >= 0:
+                rho     = cls._cntrlParams.iat[i,1]
+                rhoUnit = cls._cntrlParams.iat[i,2]
             else:
                 print("    ----> dEdx.parsedEdx: ", \
                       " unprocessed control field:", \
@@ -142,7 +148,7 @@ class dEdx(object):
         Eta1     = K * z**2 * Z/A
         Eta1Unit = "Need to work unit out"
 
-        return K, KUnit, Z, A, z, Eta1, Eta1Unit, Mp, MpUnit
+        return K, KUnit, Z, A, z, Eta1, Eta1Unit, Mp, MpUnit, rho, rhoUnit
 
 
 #--------  Get/set methods:
@@ -187,6 +193,12 @@ class dEdx(object):
     def getProjectileMassUnit(self):
         return self._MpUnit
 
+    def getrho(self):
+        return self._rho
+    
+    def getrhoUnit(self):
+        return self._rhoUnit
+    
 
 #--------  Print methods:
 
@@ -205,7 +217,7 @@ class dEdx(object):
             raise BadParameters()
         Ans = self.getK() * self.getChargeNumber()**2 * \
                self.getZ()/self.getA() * self.getProjectileMass() \
-               / 2. / T
+               / 2. / T * self.getrho()
         return Ans
     
 
