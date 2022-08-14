@@ -52,7 +52,7 @@ from datetime import date
 
 class MCS(object):
     __instance = None
-    __Debug    = True
+    __Debug    = False
 
 #--------  "Built-in methods":
     def __new__(cls, _filename=None):

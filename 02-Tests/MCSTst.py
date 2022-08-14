@@ -23,7 +23,7 @@ print("MCSTest:", MCSTest, " check if class is a singleton.")
 BraggPATH = os.getenv('BraggPATH')
 print(BraggPATH)
 filename  = os.path.join(BraggPATH, \
-                         '11-MCS-parameters/MCS-parameters.csv')
+                         '11-BraggParameters/BraggParameters.csv')
 iMCS  = MCS.MCS(filename)
 iMCS1 = MCS.MCS(filename)
 print("    iMCS singleton test -- OK if 0:", id(iMCS)-id(iMCS1))
@@ -43,6 +43,7 @@ print(iMCS)
 
 ##! Check calculation of theta0:
 MCSTest += 1
+print()
 print("MCSTest:", MCSTest, " check calculation of theta0.")
 x = 10.
 K = 100.
@@ -52,6 +53,7 @@ print("     ---> x =", x, " cm; K =", K, " MeV: theta0 =", Theta0)
 
 ##! Check calculation of Yplane:
 MCSTest += 1
+print()
 print("MCSTest:", MCSTest, " check calculation of Yplane.")
 x = 10.
 K = 100.

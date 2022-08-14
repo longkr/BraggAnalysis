@@ -23,7 +23,7 @@ print("dEdxTest:", dEdxTest, " check if class is a singleton.")
 BraggPATH = os.getenv('BraggPATH')
 print(BraggPATH)
 filename  = os.path.join(BraggPATH, \
-                         '11-MCS-parameters/MCS-parameters.csv')
+                         '11-BraggParameters/BraggParameters.csv')
 idEdx  = dEdx.dEdx(filename)
 idEdx1 = dEdx.dEdx(filename)
 print("    idEdx singleton test -- OK if 0:", id(idEdx)-id(idEdx1))
@@ -48,15 +48,6 @@ print("dEdxTest:", dEdxTest, " check calculation of dEdx.")
 T = 100.
 Ans = idEdx.getdEdx(T)
 print("     ---> T =", T, " MeV: dEdx =", Ans)
-
-
-##! Check calculation of Yplane:
-dEdxTest += 1
-print("dEdxTest:", dEdxTest, " check calculation of Yplane.")
-x = 10.
-K = 100.
-#Yplane = idEdx.getYplane(x, K)
-#print("     ---> x =", x, " cm; K =", K, " MeV: Yplane =", Yplane)
 
 
 ##! Complete:

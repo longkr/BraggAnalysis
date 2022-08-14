@@ -52,7 +52,7 @@ from datetime import date
 
 class dEdx(object):
     __instance = None
-    __Debug    = True
+    __Debug    = False
 
 #--------  "Built-in methods":
     def __new__(cls, _filename=None):
@@ -81,7 +81,7 @@ class dEdx(object):
                 if cls.__Debug:
                     print(" dEdx: parameters: \n", \
                           cls._cntrlParams)
-                    cls._K, cls._KUnit, cls._Z, cls._A, cls._z, \
+                cls._K, cls._KUnit, cls._Z, cls._A, cls._z, \
                     cls._Eta1, cls._Eta1Unit, \
                     cls._Mp, cls._MpUnit, \
                     = cls.parsedEdx()
