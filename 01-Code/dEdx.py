@@ -52,7 +52,7 @@ from datetime import date
 
 class dEdx(object):
     __instance = None
-    __Debug    = False
+    __Debug    = True
 
 #--------  "Built-in methods":
     def __new__(cls, _filename=None):
@@ -82,9 +82,11 @@ class dEdx(object):
                     print(" dEdx: parameters: \n", \
                           cls._cntrlParams)
                 cls._K, cls._KUnit, cls._Z, cls._A, cls._z, \
-                    cls._Eta1, cls._Eta1Unit, \
                     cls._Mp, cls._MpUnit, \
-                    cls._rho, cls._rhoUnit, \
+                    cls._me, cls._meUnit, \
+                    cls._rho, cls._rhoUnit, cls._I, cls._IUnit, \
+                    cls._Eta1, cls._Eta1Unit, \
+                    cls._Alpha1 \
                     = cls.parsedEdx()
         
         return cls.__instance
@@ -99,12 +101,15 @@ class dEdx(object):
               " ", self.getKUnit())
         print("  Effective atomic nunber:", self.getZ())
         print("    Effective mass nunber:", self.getA())
-        print("                     Eta1:", self.getEta1(), \
-              " ", self.getEta1Unit())
         print("          Projectile mass:", self.getProjectileMass(), \
               " ", self.getProjectileMassUnit())
         print("                  Density:", self.getrho(), \
               " ", self.getrhoUnit())
+        print("   Mean excitation energy:", self.getI(), \
+              " ", self.getIUnit())
+        print("                     Eta1:", self.getEta1(), \
+              " ", self.getEta1Unit())
+        print("                   Alpha1:", self.getAlpha1())
         return "     <---- Done."
 
     
@@ -135,9 +140,15 @@ class dEdx(object):
             elif cls._cntrlParams.iat[i,0].find("Projectile mass") >= 0:
                 Mp     = cls._cntrlParams.iat[i,1]
                 MpUnit = cls._cntrlParams.iat[i,2]
+            elif cls._cntrlParams.iat[i,0].find("Electron mass") >= 0:
+                me     = cls._cntrlParams.iat[i,1]
+                meUnit = cls._cntrlParams.iat[i,2]
             elif cls._cntrlParams.iat[i,0].find("Density") >= 0:
                 rho     = cls._cntrlParams.iat[i,1]
                 rhoUnit = cls._cntrlParams.iat[i,2]
+            elif cls._cntrlParams.iat[i,0].find("Mean excitation energy") >= 0:
+                I     = cls._cntrlParams.iat[i,1]
+                IUnit = cls._cntrlParams.iat[i,2]
             else:
                 print("    ----> dEdx.parsedEdx: ", \
                       " unprocessed control field:", \
@@ -147,8 +158,11 @@ class dEdx(object):
         #.. Derived constants:
         Eta1     = K * z**2 * Z/A
         Eta1Unit = "Need to work unit out"
+        R        = me / Mp
+        Alpha1   = 8. * R**2 / I**2
 
-        return K, KUnit, Z, A, z, Eta1, Eta1Unit, Mp, MpUnit, rho, rhoUnit
+        return K, KUnit, Z, A, z, Mp, MpUnit, me, meUnit, \
+            rho, rhoUnit, I, IUnit, Eta1, Eta1Unit, Alpha1 
 
 
 #--------  Get/set methods:
@@ -175,6 +189,9 @@ class dEdx(object):
     def getEta1Unit(self):
         return self._Eta1Unit
         
+    def getAlpha1(self):
+        return self._Alpha1
+        
     def getK(self):
         return self._K
         
@@ -193,11 +210,23 @@ class dEdx(object):
     def getProjectileMassUnit(self):
         return self._MpUnit
 
+    def getElectronMass(self):
+        return self._me
+        
+    def getElectronMassUnit(self):
+        return self._meUnit
+
     def getrho(self):
         return self._rho
     
     def getrhoUnit(self):
         return self._rhoUnit
+    
+    def getI(self):
+        return self._I
+    
+    def getIUnit(self):
+        return self._IUnit
     
 
 #--------  Print methods:
@@ -215,9 +244,16 @@ class dEdx(object):
             if dEdx.__Debug:
                 print("     ----> T invalid, raising exception.")
             raise BadParameters()
+
+        
         Ans = self.getK() * self.getChargeNumber()**2 * \
                self.getZ()/self.getA() * self.getProjectileMass() \
                / 2. / T * self.getrho()
+
+        Beta2 = 2. * T / self.getProjectileMass()
+
+        Ans *= 0.5 * mth.log( self.getAlpha1() * T**2 - Beta2)
+        
         return Ans
     
 

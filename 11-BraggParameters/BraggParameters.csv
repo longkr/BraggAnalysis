@@ -1,9 +1,11 @@
 Flag,Value,Unit
-Ionisation energy,13.60,MeV
-Charge number,1.00,
+Ionisation energy,13.6,MeV
+Charge number,1,
 Radiation length (water),36.08,g/cm^2
+Electron mass,0.51099895,MeV
 Projectile mass (proton),938.27,MeV
-Density (water),1.00,g/cm^3
+Density (water),1,g/cm^3
 Coefficient for dE/dx,0.31,MeV mol^(-1) cm^2
 <Z> (water),7.54,
 <A> (water),14.33,
+Mean excitation energy,7.50E-05,MeV
