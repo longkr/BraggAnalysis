@@ -9,3 +9,6 @@ Coefficient for dE/dx,0.31,MeV mol^(-1) cm^2
 <Z> (water),7.54,
 <A> (water),14.33,
 Mean excitation energy,7.50E-05,MeV
+Exponent of range-energy relation,1.77,
+Fraction of locally absorbed energy released in nonelastic nuclear interactions,0.6,
+Proportionality factor,0.022,
