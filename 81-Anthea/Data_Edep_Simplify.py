@@ -2,7 +2,6 @@
 # -*- coding: utf-8 -*-
 """
 Created on Tue Jul 23 09:02:47 2019
-
 @author: htl17
 """
 
@@ -10,7 +9,9 @@ import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
 from braggcurve_basic import bragg_vec
+from braggcurve_basic import bragg_vec1
 from scipy import optimize
+
 plt.style.use('default')
 
 ## Process data file
@@ -86,11 +87,14 @@ def plotEdepFit(nEvents,data='hits.dat'):
 
     # Plotting data and fit
     colorlist = ['red','red','orange','orange','yellow','yellow','lime','lime']
+    print(" ******** KL:  <--------")
+    print("     ----> depthList:", depthList)
+    print("     ----> eDepList:", depthList)
     for i in np.arange(0,int(len(depthList))):
         plt.errorbar(depthList[i],eDepList[i],fmt='o', color=colorlist[i],zorder=1)            
 
     xd = np.linspace(0,30,num=1000)
-    plt.plot(xd, bragg_vec(xd,*popt),color='black',linestyle='--',lw=2.0,zorder=0,label='Fitted Bragg Peak')
+    plt.plot(xd, bragg_vec1(xd,*popt),color='black',linestyle='--',lw=2.0,zorder=0,label='Fitted Bragg Peak')
     plt.legend(fontsize=14, frameon=True, facecolor='white',framealpha=1,edgecolor='black')
 
     plt.title("Proton Simulation Energy Deposition",fontsize=26)

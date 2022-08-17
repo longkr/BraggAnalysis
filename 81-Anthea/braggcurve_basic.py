@@ -6,8 +6,11 @@ Created on Wed Mar 27 11:58:21 2019
 @author: htl17
 """
 
+import math  as mth
 import numpy as np
 from scipy import special
+
+import MCS as mcs
 
 ################
 ## Parameters ##
@@ -53,6 +56,39 @@ def bragg_vec(z, phi0, epsilon, r0, beta, sigma):
     y = np.zeros(z.shape)
     for i in range(len(y)):
         y[i]=bragg(z[i], phi0, epsilon, r0, beta, sigma)
+            
+    return y
+
+def bragg_vec1(z, phi0, epsilon, r0, beta, sigma):
+    y = np.zeros(z.shape)
+    iMCS = mcs.MCS('../11-BraggParameters/BraggParameters.csv')
+    zi = -0.03003003003003
+    yPlni = 0.
+    print("z, dz, T, yPln, dV, yi, y, E, p, relbeta, relgamma, ", \
+          "relgamma*relbeta")
+    for i in range(len(y)):
+        y[i]=bragg(z[i], phi0, epsilon, r0, beta, sigma)
+        if (r0-z[i]) > 0.:
+            T  = ( (r0-z[i]) / alpha )**(1./p)
+            Ti = T
+        T = Ti
+        dz   = (z[i]-zi)
+        if dz != 0. and T > 115.:
+            yPln  = iMCS.getYplane(dz, T)
+            yPlni = yPln
+        dz   = (z[i]-zi)
+        yPln = yPlni
+        dV    = np.pi*(0.1 + yPln)**2 * dz
+        yi   = y[i]
+        y[i] = y[i] / dV
+        Energy   = iMCS.getProjectileMass() + T
+        mmtm     = mth.sqrt(Energy**2 - iMCS.getProjectileMass()**2)
+        relbeta  = mmtm/Energy
+        relgamma = 1./mth.sqrt(1.-relbeta**2)
+        print(z[i], dz, T, yPln, dV, yi, y[i], Energy, mmtm, \
+              relbeta, relgamma, relgamma*relbeta)
+        zi   = z[i]
+            
     return y
 
 def zeta(r0, sigma, z):
